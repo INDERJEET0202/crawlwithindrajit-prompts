@@ -23,6 +23,8 @@ for (const p of C.PROMPTS) {
 fs.rmSync(OUT, { recursive: true, force: true });
 fs.mkdirSync(OUT, { recursive: true });
 fs.cpSync(path.join(ROOT, "assets"), path.join(OUT, "assets"), { recursive: true });
+// public/ → site root as-is (verification files, etc.)
+if (fs.existsSync(path.join(ROOT, "public"))) fs.cpSync(path.join(ROOT, "public"), OUT, { recursive: true });
 
 const write = (rel, content) => {
   const file = path.join(OUT, rel);
