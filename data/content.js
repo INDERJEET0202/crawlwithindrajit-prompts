@@ -41,7 +41,7 @@ const ABOUT = {
   ],
   // "From the garage" gallery. type: "image" or "video" (videos loop silently). shape: "wide" or "tall".
   gallery: [
-    { type: "image", src: "assets/images/garage/night-lake.jpg", alt: "Indrajit standing beside his black Pulsar N160 by a lake at night with city towers behind", shape: "wide" },
+    { type: "image", src: "assets/images/garage/lakeside-cinematic.jpg", alt: "Indrajit standing beside his black Pulsar N160 by a lake at night with city towers behind", shape: "wide" },
     { type: "video", src: "assets/videos/garage/night-headlight.mp4", poster: "assets/videos/garage/night-headlight.jpg", alt: "Pulsar N160 headlight glowing at night", shape: "tall" },
     { type: "video", src: "assets/videos/garage/night-parked.mp4", poster: "assets/videos/garage/night-parked.jpg", alt: "Pulsar N160 parked on a quiet street at night", shape: "tall" },
     { type: "video", src: "assets/videos/garage/pulsar-badge.mp4", poster: "assets/videos/garage/pulsar-badge.jpg", alt: "Close-up of the Pulsar badge on the fuel tank", shape: "wide" },
