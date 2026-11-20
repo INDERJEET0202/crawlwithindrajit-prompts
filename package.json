@@ -1,0 +1,10 @@
+{
+  "name": "crawlwithindrajit-prompts",
+  "private": true,
+  "description": "AI prompt library and store for @crawlwithindrajit",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "dev": "node scripts/build.js && python3 -m http.server 8080 --directory dist"
+  },
+  "engines": { "node": ">=18" }
+}
