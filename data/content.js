@@ -7,9 +7,9 @@
 const SITE = {
   name: "CrawlWithIndrajit Prompts",
   url: "https://crawlwithindrajit-prompts.vercel.app", // change when you buy a domain
-  title: "Free AI Prompts for Bike Reels & GTA-Style Images | CrawlWithIndrajit",
-  description: "Copy-ready AI prompts for ChatGPT and Gemini — put your bike into GTA San Andreas scenes, create cinematic AI images and reels, and follow the exact workflow. By @crawlwithindrajit.",
-  ogImage: "assets/images/prompts/gta-san-andreas-vehicle-story/og.jpg",
+  title: "AI Prompts for Riders & Creators — Free Prompts, Reel Kits | CrawlWithIndrajit",
+  description: "Free, tested AI prompts for ChatGPT and Gemini to create cinematic images and reels of your bike — plus the exact editing workflow. Prompt packs and Claude skills coming soon.",
+  ogImage: "assets/images/og/home.jpg", // home page link preview (made from scripts/og-home.html)
   handle: "crawlwithindrajit",
   instagram: "https://www.instagram.com/crawlwithindrajit/",
   dm: "https://ig.me/m/crawlwithindrajit", // opens an Instagram DM

@@ -135,8 +135,8 @@ function homePage(C) {
         ${ig("eyebrow", `<span class="dot"></span> ${esc(handle)} · AI prompt studio`)}
         <h1>Ride the machine.<br /><em>Prompt the chaos.</em></h1>
         <p class="lead">
-          Free, tested AI prompts for ChatGPT and Gemini — put your bike into game worlds like
-          GTA San Andreas, create cinematic AI images and turn them into reels. Prompt packs,
+          Free, tested AI prompts for ChatGPT and Gemini — create cinematic images of your bike,
+          drop it into game-style worlds and turn the results into reels. Prompt packs,
           reel kits and Claude skills coming soon.
         </p>
         <div class="hero-cta">
