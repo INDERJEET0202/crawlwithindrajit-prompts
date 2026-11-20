@@ -11,9 +11,9 @@
   --accent-3: #ffc23d;    /* sodium yellow */
   --radius: 18px;
   --max: 1180px;
-  --display: "Anton", "Impact", sans-serif;
-  --body: "Inter", system-ui, -apple-system, sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, monospace;
+  --display: var(--font-anton), "Impact", sans-serif;
+  --body: var(--font-inter), system-ui, -apple-system, sans-serif;
+  --mono: var(--font-mono), ui-monospace, monospace;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }

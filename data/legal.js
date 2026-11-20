@@ -5,9 +5,9 @@
    in content.js — payment providers like Razorpay check these pages.
    ===================================================================== */
 
-const UPDATED = "2026-11-21";
+export const UPDATED = "2026-11-21";
 
-function legalPages(SITE) {
+export function legalPages(SITE) {
   const ig = "@" + SITE.handle;
   const reach = SITE.contactEmail
     ? `email ${SITE.contactEmail} or send a DM to ${ig} on Instagram`
@@ -33,7 +33,6 @@ function legalPages(SITE) {
         ]},
         { h: "Third-party services on this site", p: [
           "Instagram (Meta): prompt pages embed Instagram reels. When a reel loads, Instagram may collect data under Meta's privacy policy.",
-          "Google Fonts: fonts load from Google's servers, which receive your IP address.",
           "YouTube (Google): the home page shows thumbnails from YouTube. A video player only loads when you press play, using YouTube's privacy-enhanced mode (youtube-nocookie.com); from then on YouTube's privacy policy applies.",
           "Videos and photos of the bike are hosted on this site itself, with location data removed.",
           "Vercel: hosts the site and provides the analytics above.",
@@ -120,4 +119,3 @@ function legalPages(SITE) {
   ].map(page => ({ ...page, updated: UPDATED }));
 }
 
-if (typeof module === "object" && module.exports) module.exports = { legalPages };

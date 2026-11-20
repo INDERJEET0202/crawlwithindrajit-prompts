@@ -1,10 +1,11 @@
 /* =====================================================================
    SITE CONTENT — edit this file to update the website.
    No coding needed: change the text between the quotes, then push.
-   The build turns this into real pages (one per prompt) + sitemap.
+   Next.js turns this into real pages (one per prompt) + sitemap.
+   Image paths below live in public/ — write them without "public/".
    ===================================================================== */
 
-const SITE = {
+export const SITE = {
   name: "CrawlWithIndrajit Prompts",
   url: "https://crawlwithindrajit-prompts.vercel.app", // change when you buy a domain
   title: "AI Prompts for Riders & Creators — Free Prompts, Reel Kits | CrawlWithIndrajit",
@@ -26,7 +27,7 @@ const SITE = {
 /* ---------------------------------------------------------------------
    ABOUT (home page). photo: path to a square photo, or "" for the logo badge.
    --------------------------------------------------------------------- */
-const ABOUT = {
+export const ABOUT = {
   title: "The rider behind the prompts",
   photo: "assets/images/about/indrajit-pulsar-n160.jpg",
   paragraphs: [
@@ -53,7 +54,7 @@ const ABOUT = {
    YOUTUBE — the build pulls your latest videos from YouTube automatically.
    This list is only used if YouTube can't be reached during a deploy.
    --------------------------------------------------------------------- */
-const YOUTUBE = {
+export const YOUTUBE = {
   fallback: {
     videos: [
       { id: "1KJ5soGAiKI", title: "Kolkata During Diwali Hits Different 🪔✨" },
@@ -85,7 +86,7 @@ const YOUTUBE = {
                 use {{key}} for a field, {{#key}}…{{/key}} for optional text
    steps, faq:  shown on the prompt page
    --------------------------------------------------------------------- */
-const PROMPTS = [
+export const PROMPTS = [
   {
     slug: "sheru-bhai-photo",
     title: "Create Your Own Picture with Sheru Bhai",
@@ -330,7 +331,7 @@ The final result should look like my actual vehicle has entered the GTA San Andr
    SHOP — future products. status: "soon" shows "Coming soon".
    When a product is ready: status: "live", price: "₹499", link: "https://..."
    --------------------------------------------------------------------- */
-const PRODUCTS = [
+export const PRODUCTS = [
   { icon: "▦", title: "Prompt Packs",   text: "Curated bundles of tested prompts by theme — game worlds, cinematic rides, poster art.", status: "soon", price: "", link: "" },
   { icon: "▶", title: "Reel Kits",      text: "Prompts + scene order + music cues + edit guide. Everything to ship a reel in one sitting.", status: "soon", price: "", link: "" },
   { icon: "✳", title: "Claude Skills",  text: "Ready-to-install Claude skills that write your hooks, captions and content plans for you.", status: "soon", price: "", link: "" },
@@ -340,7 +341,7 @@ const PRODUCTS = [
 /* ---------------------------------------------------------------------
    HOW IT WORKS (home page) — general flow for any prompt
    --------------------------------------------------------------------- */
-const STEPS = [
+export const STEPS = [
   { title: "Pick a prompt", text: "Browse the library and open the one that fits your idea. Every prompt comes with real results.", tag: "Library" },
   { title: "Customize & generate", text: "Fill in your details, copy the prompt into ChatGPT, Gemini or the tool listed, and upload your photos if it asks.", tag: "AI tool" },
   { title: "Edit", text: "Drop the results into Instagram Edits, arrange them, and sync to music.", tag: "Edits app" },
@@ -350,7 +351,7 @@ const STEPS = [
 /* ---------------------------------------------------------------------
    FACTS & TIPS — type: "ai", "bike" or "tip"
    --------------------------------------------------------------------- */
-const FACTS = [
+export const FACTS = [
   { type: "tip",  text: "Upload photos from different angles — side, front three-quarter and rear. The more the AI sees, the more accurately it keeps your vehicle's details." },
   { type: "tip",  text: "Generate one image at a time instead of everything at once. Quality goes up, and you can redo any single scene that misses." },
   { type: "ai",   text: "AI image tools can drift on small details like logos and number plates. If something changes, ask it to \"keep the vehicle exactly like my photos\" and regenerate." },
@@ -359,5 +360,3 @@ const FACTS = [
   { type: "tip",  text: "Sync image changes to the beat drops of your song. Beat-matched cuts make a simple slideshow feel like a proper edit." },
 ];
 
-/* Used by the build (Node). Harmless in the browser. */
-if (typeof module === "object" && module.exports) module.exports = { SITE, ABOUT, YOUTUBE, PROMPTS, PRODUCTS, STEPS, FACTS };
