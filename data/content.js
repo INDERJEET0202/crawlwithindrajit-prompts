@@ -87,6 +87,124 @@ const YOUTUBE = {
    --------------------------------------------------------------------- */
 const PROMPTS = [
   {
+    slug: "sheru-bhai-photo",
+    title: "Create Your Own Picture with Sheru Bhai",
+    seoTitle: "Sheru Bhai AI Prompt: Your Photo with the White Lion (Free)",
+    description: "Free ChatGPT & Gemini prompt to put yourself in a photo with Sheru Bhai — the white lion in a luxury suit and gold chains. Reference image included.",
+    keywords: ["Sheru Bhai AI prompt", "Sheru Bhai photo", "white lion AI photo", "lion in suit AI image", "ChatGPT photo with lion", "AI photo editing prompt"],
+    published: "2026-11-21",
+    category: "Image",
+    price: "Free",
+    summary: "Upload your photo and the Sheru Bhai reference — get a real-looking photo of you with the stylish white lion in an ivory suit and heavy gold chains.",
+    tools: ["ChatGPT", "Gemini"],
+    output: "1 photo · photorealistic",
+    stepsTitle: "Make yours",
+    reelText: "Sheru Bhai in action — watch how the photos come together on Instagram.",
+    cover: "assets/images/prompts/sheru-bhai-photo/result-street-night.jpg",
+    ogImage: "assets/images/prompts/sheru-bhai-photo/og.jpg",
+    reel: "",
+    images: [
+      { src: "assets/images/prompts/sheru-bhai-photo/result-street-night.jpg", caption: "Festive street at night", alt: "AI photo of Indrajit on a festive Indian street at night with Sheru Bhai, a white lion in an ivory suit and gold chains, resting an arm on his shoulder" },
+      { src: "assets/images/prompts/sheru-bhai-photo/result-gh-sign.jpg", caption: "With the N160", alt: "AI photo of Indrajit leaning on his Pulsar N160 beside Sheru Bhai the white lion in a white suit" },
+      { src: "assets/images/prompts/sheru-bhai-photo/result-royal-sofa.jpg", caption: "Royal lounge", alt: "AI photo of Indrajit giving a thumbs up on a golden sofa next to Sheru Bhai the white lion" },
+    ],
+    compare: {
+      title: "From my photo to Sheru Bhai",
+      text: "Drag the slider: the original photo on the left, the same shot after this prompt on the right.",
+      ratio: "3 / 4",
+      before: "assets/images/prompts/sheru-bhai-photo/before-real.jpg", beforeLabel: "Original",
+      after: "assets/images/prompts/sheru-bhai-photo/result-gh-sign.jpg", afterLabel: "With Sheru Bhai",
+      alt: "Slider comparing the original photo of Indrajit with his bike and the AI version with Sheru Bhai",
+    },
+    inputsTitle: "What to upload",
+    inputsText: "Two images go into the AI: a clear photo of you, and the Sheru Bhai reference so the lion looks the same every time. Download the reference below.",
+    inputs: [
+      { src: "assets/images/prompts/sheru-bhai-photo/before-real.jpg", label: "Your photo", tip: "Face clearly visible, good light. Half or full body works best." },
+      { src: "assets/images/prompts/sheru-bhai-photo/sheru-bhai-reference.jpg", label: "Sheru Bhai reference", tip: "Keeps his mane, sunglasses, suit and gold chains consistent.", download: "sheru-bhai-reference.jpg" },
+    ],
+    fields: [
+      { key: "side", label: "Sheru Bhai stands on", type: "select", default: "Allow me to choose whether Sheru Bhai appears on my left or right.", options: [
+        { value: "Allow me to choose whether Sheru Bhai appears on my left or right.", label: "Whichever looks natural" },
+        { value: "Place Sheru Bhai on my right side.", label: "My right" },
+        { value: "Place Sheru Bhai on my left side.", label: "My left" },
+      ]},
+      { key: "pose", label: "Sheru Bhai's pose", type: "select", default: "He can stand or sit depending on the original photograph.", options: [
+        { value: "He can stand or sit depending on the original photograph.", label: "Match my photo" },
+        { value: "He should be standing.", label: "Standing" },
+        { value: "He should be sitting beside me.", label: "Sitting" },
+      ]},
+      { key: "background", label: "Background", type: "select", default: "Maintain the original photograph's background wherever possible.", options: [
+        { value: "Maintain the original photograph's background wherever possible.", label: "Keep my photo's background" },
+        { value: "Replace the background with a busy Indian street at night with festive string lights.", label: "Festive street at night" },
+        { value: "Replace the background with a royal lounge with a golden sofa and warm lamp light.", label: "Royal golden lounge" },
+        { value: "Replace the background with a luxury car showroom with dramatic lighting.", label: "Luxury showroom" },
+      ]},
+    ],
+    prompt: `Create an ultra-realistic, professional, cinematic photograph featuring me and Sheru Bhai together.
+
+1. Preserve My Identity
+* Use my uploaded photograph as the exact identity reference.
+* Keep my face, facial structure, hairstyle, hair colour, skin tone and facial hair unchanged.
+* Preserve my original clothing, colours, accessories and body proportions.
+* Do not beautify, redesign or replace my appearance.
+* Make me look natural and realistic.
+
+2. Sheru Bhai – Character Identity (VERY IMPORTANT)
+Recreate Sheru Bhai with these consistent characteristics:
+* A majestic, realistic anthropomorphic white lion.
+* Thick, fluffy, voluminous white/cream-coloured mane.
+* Realistic lion face, expressive eyes and detailed white fur.
+* Stylish black sunglasses.
+* Premium ivory-white three-piece luxury suit with matching waistcoat and trousers.
+* Multiple heavy, shiny gold chains around his neck.
+* A large, luxurious gold medallion pendant.
+* Premium gold wristwatch.
+* Confident, powerful and friendly personality.
+
+Keep Sheru Bhai's appearance consistent with the uploaded reference image. Do not change his fur colour, face, mane, outfit or signature gold jewellery.
+
+3. Composition and Position
+* Place Sheru Bhai naturally beside me.
+* {{pose}}
+* His arm can rest casually over my shoulder.
+* Maintain realistic human-to-lion proportions.
+* {{side}}
+* Make both subjects look naturally present in the same photograph.
+
+4. Professional Photography
+* Photorealistic Photoshop-quality compositing.
+* Perfectly matched lighting and shadows.
+* Realistic skin, fur, fabric and jewellery textures.
+* Natural perspective and proportions.
+* Cinematic colour grading.
+* Professional DSLR photography quality.
+* Detailed background integration.
+* No artificial-looking edges or pasted-on appearance.
+
+5. Final Output
+* Ultra HD / 4K quality.
+* Sharp facial details.
+* Professional cinematic finish.
+* {{background}}
+* No unnecessary text, logos or watermarks.
+* Exactly two main subjects: me and Sheru Bhai.
+
+Final instruction: Make this look like a real photograph taken together, not an AI-generated collage. Prioritise identity preservation and Sheru Bhai's consistent character appearance.`,
+    steps: [
+      { title: "Get the two images", text: "Download the Sheru Bhai reference from this page and pick a clear photo of yourself." },
+      { title: "Upload both", text: "Open ChatGPT, or another AI image tool that accepts reference images, and upload your photo and the reference together." },
+      { title: "Customize & paste", text: "Choose side, pose and background above, copy the prompt and send it. Ask for a redo if the lion doesn't match the reference." },
+      { title: "Post & tag", text: "Share it with #SheruBhai and tag @crawlwithindrajit. Your photo. Your style. Sheru Bhai's swag." },
+    ],
+    faq: [
+      { q: "Is the Sheru Bhai prompt free?", a: "Yes. Copy it, customize it and use it as often as you like." },
+      { q: "Why do I need the reference image?", a: "Without it, every AI draws a different-looking lion. The reference keeps Sheru Bhai's face, mane, sunglasses, suit and gold chains the same in every photo." },
+      { q: "Which photo of me works best?", a: "A clear, well-lit photo where your face is fully visible, ideally half or full body. Group photos don't work well — the prompt expects exactly you and Sheru Bhai." },
+      { q: "Can I choose which side Sheru Bhai stands on?", a: "Yes. Use \"Sheru Bhai stands on\" in Customize your prompt before copying." },
+      { q: "Is my photo uploaded to this website?", a: "No. You upload your photo directly to the AI tool you use, under that tool's own privacy terms. Nothing you upload passes through this site." },
+    ],
+  },
+  {
     slug: "gta-san-andreas-vehicle-story",
     title: "Turn Your Vehicle Into a GTA San Andreas Story",
     seoTitle: "GTA San Andreas AI Prompt: Put Your Bike in GTA (Free)",
@@ -103,11 +221,15 @@ const PROMPTS = [
     reel: "https://www.instagram.com/reel/Df70GgeAJz1/",
     // Before/after slider: same bike, real photo vs AI result
     compare: {
+      title: "Same bike, two worlds",
+      text: "Drag the slider: my real Pulsar N160 on the left, the AI result from this prompt on the right.",
       before: "assets/images/prompts/gta-san-andreas-vehicle-story/real-side.jpg", beforeLabel: "Real photo",
       after: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp", afterLabel: "AI result",
       alt: "Slider comparing a real photo of a black Pulsar N160 with the GTA San Andreas style AI image",
     },
     // "What to upload" — the real photos that went into the AI
+    inputsTitle: "The photos that went in",
+    inputsText: "These are the real photos I uploaded with the prompt. Shoot yours the same way — clear, well-lit, whole bike in frame.",
     inputs: [
       { src: "assets/images/prompts/gta-san-andreas-vehicle-story/input-side.jpg", label: "Side", tip: "Full side profile in daylight — shows decals, wheels and shape." },
       { src: "assets/images/prompts/gta-san-andreas-vehicle-story/input-front.jpg", label: "Front", tip: "Headlight, mirrors and number plate." },

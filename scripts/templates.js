@@ -418,13 +418,13 @@ function promptPage(p, C) {
     <div class="feature">
       <div class="feature-media">
         <h2 class="label">Real results</h2>
-        ${(p.images || []).map((img, i) => `
-        <figure class="shot">
+        ${(p.images || []).map((img, i) => { const d = C.dims(img.src) || { w: 1600, h: 900 }; return `
+        <figure class="shot${d.h > d.w ? " portrait" : ""}">
           <button class="shot-btn" data-src="${asset(img.src)}" aria-label="View ${esc(img.caption)} full size">
-            <img src="${asset(img.src)}" alt="${esc(img.alt || img.caption)}" width="1600" height="900" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} />
+            <img src="${asset(img.src)}" alt="${esc(img.alt || img.caption)}" width="${d.w}" height="${d.h}" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} />
           </button>
           <figcaption>${esc(img.caption)}</figcaption>
-        </figure>`).join("")}
+        </figure>`; }).join("")}
       </div>
 
       <div class="feature-body">
@@ -446,6 +446,7 @@ function promptPage(p, C) {
         <div class="feature-actions">
           <button class="btn btn-primary js-copy" type="button">Copy full prompt</button>
           <button class="btn btn-ghost js-share" type="button">Share</button>
+          ${(p.inputs || []).filter(i => i.download).map(i => `<a class="btn btn-ghost" href="${asset(i.src)}" download="${esc(i.download)}">⬇ ${esc(i.label)}</a>`).join("")}
         </div>
       </div>
     </div>
@@ -453,11 +454,11 @@ function promptPage(p, C) {
     ${p.compare ? `
     <section class="compare-block" aria-labelledby="compare-title">
       <p class="kicker">Real vs AI</p>
-      <h2 id="compare-title">Same bike, two worlds</h2>
-      <p class="sub">Drag the slider: my real Pulsar N160 on the left, the AI result from this prompt on the right.</p>
-      <div class="compare" style="--pos:50%">
-        <img class="compare-img" src="${asset(p.compare.after)}" alt="${esc(p.compare.afterLabel)}" loading="lazy" width="1600" height="900" />
-        <div class="compare-before"><img class="compare-img" src="${asset(p.compare.before)}" alt="${esc(p.compare.beforeLabel)}" loading="lazy" width="1600" height="900" /></div>
+      <h2 id="compare-title">${esc(p.compare.title || "Before and after")}</h2>
+      <p class="sub">${esc(p.compare.text || "Drag the slider to compare the original with the AI result.")}</p>
+      <div class="compare${p.compare.ratio && /^\s*(\d+)\s*\/\s*(\d+)/.test(p.compare.ratio) && +RegExp.$1 < +RegExp.$2 ? " portrait" : ""}" style="--pos:50%;${p.compare.ratio ? ` aspect-ratio:${esc(p.compare.ratio)};` : ""}">
+        <img class="compare-img" src="${asset(p.compare.after)}" alt="${esc(p.compare.afterLabel)}" loading="lazy" />
+        <div class="compare-before"><img class="compare-img" src="${asset(p.compare.before)}" alt="${esc(p.compare.beforeLabel)}" loading="lazy" /></div>
         <span class="compare-tag left">${esc(p.compare.beforeLabel)}</span>
         <span class="compare-tag right">${esc(p.compare.afterLabel)}</span>
         <span class="compare-handle" aria-hidden="true"><span>⟷</span></span>
@@ -468,13 +469,13 @@ function promptPage(p, C) {
     ${p.inputs && p.inputs.length ? `
     <section class="inputs-block" aria-labelledby="inputs-title">
       <p class="kicker">What to upload</p>
-      <h2 id="inputs-title">The photos that went in</h2>
-      <p class="sub">These are the real photos I uploaded with the prompt. Shoot yours the same way — clear, well-lit, whole bike in frame.</p>
-      <div class="inputs">${p.inputs.map(inp => `
-        <figure class="input">
-          <img src="${asset(inp.src)}" alt="${esc(inp.label)} view of the Pulsar N160 used as input photo" loading="lazy" />
-          <figcaption><strong>${esc(inp.label)}</strong> ${esc(inp.tip)}</figcaption>
-        </figure>`).join("")}
+      <h2 id="inputs-title">${esc(p.inputsTitle || "What to upload")}</h2>
+      <p class="sub">${esc(p.inputsText || "The photos that went into the AI with this prompt.")}</p>
+      <div class="inputs" style="max-width:${Math.round(p.inputs.reduce((t, inp) => { const d = C.dims(inp.src) || { w: 1, h: 1 }; return t + d.w / d.h; }, 0) * 420 + (p.inputs.length - 1) * 16)}px">${p.inputs.map(inp => { const d = C.dims(inp.src) || { w: 1, h: 1 }; return `
+        <figure class="input${d.w > d.h ? " landscape" : ""}" style="flex-grow:${(d.w / d.h).toFixed(3)}">
+          <img src="${asset(inp.src)}" alt="${esc(inp.alt || inp.label + " — input photo for this prompt")}" width="${d.w}" height="${d.h}" loading="lazy" />
+          <figcaption><strong>${esc(inp.label)}</strong> ${esc(inp.tip)}${inp.download ? ` <a class="dl-link" href="${asset(inp.src)}" download="${esc(inp.download)}">⬇ Download</a>` : ""}</figcaption>
+        </figure>`; }).join("")}
       </div>
     </section>` : ""}
 
@@ -482,7 +483,7 @@ function promptPage(p, C) {
       <div class="reel-text">
         <p class="kicker">Watch it</p>
         <h2 id="reel-title">See the reel</h2>
-        <p class="sub">This is what the prompt turns into once it is edited and set to music.</p>
+        <p class="sub">${esc(p.reelText || "This is what the prompt turns into once it is edited and set to music.")}</p>
         ${ig("btn btn-primary", `Follow ${esc(handle)}`)}
       </div>
       ${reelEmbed(p, SITE, ig)}
@@ -491,7 +492,7 @@ function promptPage(p, C) {
     ${p.steps && p.steps.length ? `
     <section class="howto" aria-labelledby="howto-title">
       <p class="kicker">How to use it</p>
-      <h2 id="howto-title">Make the reel</h2>
+      <h2 id="howto-title">${esc(p.stepsTitle || "Make the reel")}</h2>
       ${stepsList(p.steps)}
     </section>` : ""}
 
