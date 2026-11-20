@@ -7,18 +7,21 @@ const json = o => JSON.stringify(o).replace(/</g, "\\u003c");
 const pad = n => String(n).padStart(2, "0");
 const promptPath = p => `/prompts/${p.slug}/`;
 
+const YT_ICON = `<svg class="yt-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M23 7.2a3 3 0 0 0-2.1-2.1C19 4.6 12 4.6 12 4.6s-7 0-8.9.5A3 3 0 0 0 1 7.2 31 31 0 0 0 .5 12 31 31 0 0 0 1 16.8a3 3 0 0 0 2.1 2.1c1.9.5 8.9.5 8.9.5s7 0 8.9-.5a3 3 0 0 0 2.1-2.1 31 31 0 0 0 .5-4.8 31 31 0 0 0-.5-4.8Z"/><path d="M9.8 15.1V8.9l5.4 3.1Z" fill="#fff"/></svg>`;
 const IG_ICON = `<svg class="ig-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>`;
 
 function makeHelpers(SITE) {
   const abs = p => SITE.url.replace(/\/$/, "") + asset(p);
   const ig = (cls, inner, label) => `<a href="${esc(SITE.instagram)}" class="${cls}" target="_blank" rel="noopener"${label ? ` aria-label="${esc(label)}"` : ""}>${inner}</a>`;
   const handle = "@" + SITE.handle;
-  return { abs, ig, handle };
+  const yt = (cls, inner, label, path = "") => SITE.youtube
+    ? `<a href="${esc(SITE.youtube + path)}" class="${cls}" target="_blank" rel="noopener"${label ? ` aria-label="${esc(label)}"` : ""}>${inner}</a>` : "";
+  return { abs, ig, yt, handle };
 }
 
 /* ------------------------------------------------------------------ layout */
 function layout(SITE, { title, description, path, ogImage, ogImageAlt, ogType = "website", jsonld = [], body, scripts = [], noindex = false, keywords }) {
-  const { abs, ig, handle } = makeHelpers(SITE);
+  const { abs, ig, yt, handle } = makeHelpers(SITE);
   const url = abs(path);
   const img = abs(ogImage || SITE.ogImage);
   return `<!doctype html>
@@ -70,6 +73,7 @@ ${jsonld.map(j => `  <script type="application/ld+json">${json(j)}</script>`).jo
       <a href="/#shop">Shop</a>
       <a href="/#how">How it works</a>
       <a href="/#about">About</a>
+      ${yt("nav-yt", `${YT_ICON}<span class="nav-yt-label">YouTube</span>`, "YouTube channel")}
       ${ig("btn-ig", `${IG_ICON}<span>Follow</span>`, "Follow on Instagram")}
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
@@ -80,14 +84,17 @@ ${body}
   <section class="cta">
     <h2>New prompts drop with every reel.</h2>
     <p>Follow ${ig("link", esc(handle))} so you never miss the next one.</p>
-    ${ig("btn btn-primary btn-lg", "Follow on Instagram →")}
+    <div class="cta-actions">
+      ${ig("btn btn-primary btn-lg", "Follow on Instagram →")}
+      ${yt("btn btn-ghost btn-lg", `${YT_ICON} Subscribe on YouTube`, "", "?sub_confirmation=1")}
+    </div>
   </section>
 
   <footer class="footer">
     <a href="/" class="logo">CRAWLWITH<span>INDRAJIT</span><small>PROMPTS</small></a>
     <p class="fine">Fan-made, game-inspired prompts and art. Not affiliated with or endorsed by any game publisher, including Rockstar Games or Take-Two Interactive.</p>
     <nav class="footer-links" aria-label="Legal">
-      <a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/refunds/">Refunds &amp; delivery</a>
+      ${yt("", "YouTube")}<a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/refunds/">Refunds &amp; delivery</a>
     </nav>
     <p class="fine">© ${new Date().getFullYear()} ${ig("link", esc(handle))}</p>
   </footer>
@@ -161,9 +168,9 @@ const SUNSET_SCENE = `<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid s
 /* ------------------------------------------------------------------ about */
 function aboutBlock(C, headingTag = "h2") {
   const { SITE, ABOUT } = C;
-  const { ig } = makeHelpers(SITE);
+  const { ig, yt } = makeHelpers(SITE);
   const photo = ABOUT.photo
-    ? `<img src="${asset(ABOUT.photo)}" alt="${esc(SITE.owner)}, creator of @${esc(SITE.handle)}" width="320" height="320" loading="lazy" />`
+    ? `<img src="${asset(ABOUT.photo)}" alt="${esc(SITE.owner)} leaning on his Pulsar N160 at night" width="960" height="1200" loading="lazy" />`
     : `<span class="about-badge" aria-hidden="true">${SUNSET_SCENE}</span>`;
   return `<div class="about">
         <div class="about-photo">${photo}</div>
@@ -173,10 +180,66 @@ function aboutBlock(C, headingTag = "h2") {
           <ul class="about-facts">${ABOUT.facts.map(f => `<li><span>${esc(f.label)}</span><strong>${esc(f.value)}</strong></li>`).join("")}</ul>
           <div class="about-actions">
             ${ig("btn btn-primary", `Follow @${esc(SITE.handle)}`)}
+            ${yt("btn btn-ghost", `${YT_ICON} YouTube`)}
             <a class="btn btn-ghost" href="/contact/">Contact</a>
           </div>
         </div>
       </div>`;
+}
+
+function garageGallery(C) {
+  const g = C.ABOUT.gallery || [];
+  if (!g.length) return "";
+  return `<div class="garage">
+        <h3 class="label">From the garage</h3>
+        <div class="garage-grid">${g.map(item => item.type === "video" ? `
+          <figure class="garage-item ${item.shape === "tall" ? "tall" : "wide"}">
+            <video muted loop playsinline preload="none" poster="${asset(item.poster)}" data-autoplay aria-label="${esc(item.alt)}"><source src="${asset(item.src)}" type="video/mp4" /></video>
+          </figure>` : `
+          <figure class="garage-item ${item.shape === "tall" ? "tall" : "wide"}">
+            <img src="${asset(item.src)}" alt="${esc(item.alt)}" loading="lazy" />
+          </figure>`).join("")}
+        </div>
+      </div>`;
+}
+
+function youtubeSection(C, number) {
+  const { SITE, YT } = C;
+  if (!SITE.youtube || !YT) return "";
+  const { yt } = makeHelpers(SITE);
+  const main = (YT.videos || [])[0];
+  const shorts = (YT.shorts || []).slice(0, 4);
+  const thumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+  return `
+    <section class="section section-alt" id="youtube" aria-labelledby="youtube-title">
+      <div class="section-head">
+        <p class="kicker">${number} — On YouTube</p>
+        <h2 id="youtube-title">Ride along on YouTube</h2>
+        <p class="sub">Moto vlogs, POV rides and N160 tips — the full stories behind the reels, on ${esc(SITE.youtubeName || "my channel")}.</p>
+      </div>
+      <div class="yt-layout">
+        ${main ? `<div class="yt-feature">
+          <button class="yt-facade" type="button" data-yt="${esc(main.id)}" aria-label="Play video: ${esc(main.title)}">
+            <img src="${thumb(main.id)}" alt="" width="480" height="360" loading="lazy" />
+            <span class="yt-play" aria-hidden="true">${YT_ICON}</span>
+          </button>
+          <p class="yt-meta"><span class="label">Latest video</span><span class="yt-title">${esc(main.title)}</span></p>
+        </div>` : ""}
+        <div class="yt-side">
+          ${shorts.length ? `<p class="label">Latest Shorts</p>
+          <div class="yt-shorts">${shorts.map(v => `
+            <a class="yt-short" href="https://www.youtube.com/shorts/${esc(v.id)}" target="_blank" rel="noopener">
+              <img src="${thumb(v.id)}" alt="" width="480" height="360" loading="lazy" />
+              <span>${esc(v.title)}</span>
+            </a>`).join("")}
+          </div>` : ""}
+          <div class="yt-actions">
+            ${yt("btn btn-primary", `${YT_ICON} Subscribe`, "", "?sub_confirmation=1")}
+            ${yt("btn btn-ghost", "All videos →", "", "/videos")}
+          </div>
+        </div>
+      </div>
+    </section>`;
 }
 
 /* ------------------------------------------------------------------ home */
@@ -267,10 +330,11 @@ function homePage(C) {
       </div>
       ${stepsList(STEPS, true)}
     </section>
+${youtubeSection(C, "04")}
 
-    <section class="section section-alt" id="facts" aria-labelledby="facts-title">
+    <section class="section" id="facts" aria-labelledby="facts-title">
       <div class="section-head">
-        <p class="kicker">04 — Pit stop</p>
+        <p class="kicker">05 — Pit stop</p>
         <h2 id="facts-title">AI facts &amp; pro tips</h2>
         <p class="sub">Things worth knowing before you hit generate.</p>
       </div>
@@ -279,15 +343,16 @@ function homePage(C) {
       </div>
     </section>
 
-    <section class="section" id="about" aria-labelledby="about-title">
-      <p class="kicker">05 — About</p>
+    <section class="section section-alt" id="about" aria-labelledby="about-title">
+      <p class="kicker">06 — About</p>
       ${aboutBlock(C)}
+      ${garageGallery(C)}
     </section>
   </main>`;
 
   const jsonld = [
     { "@context": "https://schema.org", "@type": "WebSite", name: SITE.name, url: abs("/"), description: SITE.description, inLanguage: "en" },
-    { "@context": "https://schema.org", "@type": "Person", name: "Indrajit", alternateName: "@" + SITE.handle, url: abs("/"), sameAs: [SITE.instagram] },
+    { "@context": "https://schema.org", "@type": "Person", name: SITE.owner, alternateName: "@" + SITE.handle, url: abs("/about/"), image: SITE.url + asset(C.ABOUT.photo || SITE.ogImage), sameAs: [SITE.instagram, SITE.youtube].filter(Boolean) },
     { "@context": "https://schema.org", "@type": "ItemList", name: "AI prompt library",
       itemListElement: PROMPTS.map((p, i) => ({ "@type": "ListItem", position: i + 1, url: abs(promptPath(p)), name: p.title })) },
   ];
@@ -385,6 +450,34 @@ function promptPage(p, C) {
       </div>
     </div>
 
+    ${p.compare ? `
+    <section class="compare-block" aria-labelledby="compare-title">
+      <p class="kicker">Real vs AI</p>
+      <h2 id="compare-title">Same bike, two worlds</h2>
+      <p class="sub">Drag the slider: my real Pulsar N160 on the left, the AI result from this prompt on the right.</p>
+      <div class="compare" style="--pos:50%">
+        <img class="compare-img" src="${asset(p.compare.after)}" alt="${esc(p.compare.afterLabel)}" loading="lazy" width="1600" height="900" />
+        <div class="compare-before"><img class="compare-img" src="${asset(p.compare.before)}" alt="${esc(p.compare.beforeLabel)}" loading="lazy" width="1600" height="900" /></div>
+        <span class="compare-tag left">${esc(p.compare.beforeLabel)}</span>
+        <span class="compare-tag right">${esc(p.compare.afterLabel)}</span>
+        <span class="compare-handle" aria-hidden="true"><span>⟷</span></span>
+        <input class="compare-range" type="range" min="0" max="100" value="50" aria-label="${esc(p.compare.alt || "Compare real photo and AI result")}" />
+      </div>
+    </section>` : ""}
+
+    ${p.inputs && p.inputs.length ? `
+    <section class="inputs-block" aria-labelledby="inputs-title">
+      <p class="kicker">What to upload</p>
+      <h2 id="inputs-title">The photos that went in</h2>
+      <p class="sub">These are the real photos I uploaded with the prompt. Shoot yours the same way — clear, well-lit, whole bike in frame.</p>
+      <div class="inputs">${p.inputs.map(inp => `
+        <figure class="input">
+          <img src="${asset(inp.src)}" alt="${esc(inp.label)} view of the Pulsar N160 used as input photo" loading="lazy" />
+          <figcaption><strong>${esc(inp.label)}</strong> ${esc(inp.tip)}</figcaption>
+        </figure>`).join("")}
+      </div>
+    </section>` : ""}
+
     <section class="reel-block" aria-labelledby="reel-title">
       <div class="reel-text">
         <p class="kicker">Watch it</p>
@@ -458,13 +551,14 @@ function aboutPage(C) {
     <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">About</span></nav>
     <p class="kicker">About</p>
     ${aboutBlock(C, "h1")}
+    ${garageGallery(C)}
   </main>`;
   return layout(SITE, {
     title: `About ${SITE.owner} | ${SITE.name}`,
     description: `Meet ${SITE.owner} (@${SITE.handle}) — the rider behind the AI prompts, reels and upcoming prompt packs on ${SITE.name}.`,
-    path: "/about/", ogType: "profile", body, scripts: ["/assets/js/app.js"],
+    path: "/about/", ogType: "profile", ogImage: C.ABOUT.photo || undefined, body, scripts: ["/assets/js/app.js"],
     jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: `About ${SITE.owner}`, url: makeHelpers(SITE).abs("/about/"),
-      mainEntity: { "@type": "Person", name: SITE.owner, alternateName: "@" + SITE.handle, sameAs: [SITE.instagram] } }],
+      mainEntity: { "@type": "Person", name: SITE.owner, alternateName: "@" + SITE.handle, sameAs: [SITE.instagram, SITE.youtube].filter(Boolean) } }],
   });
 }
 

@@ -13,6 +13,9 @@ const SITE = {
   handle: "crawlwithindrajit",
   instagram: "https://www.instagram.com/crawlwithindrajit/",
   dm: "https://ig.me/m/crawlwithindrajit", // opens an Instagram DM
+  youtube: "https://www.youtube.com/@indrajitpal02",
+  youtubeName: "Indrajit Pal",
+  youtubeChannelId: "UCBU4Wvjy9xXRbDBxWWR-I2w", // latest videos are pulled from YouTube on every deploy
   googleVerification: "qk_z3i3lw-ght1tn-V_4z3EIq2v1vC_8qscRFaMpXO4", // Google Search Console (HTML tag method)
   owner: "Indrajit",          // name shown on About + policy pages (use your legal name before selling)
   contactEmail: "",           // public email for customers — shown on Contact + policy pages when filled
@@ -25,7 +28,7 @@ const SITE = {
    --------------------------------------------------------------------- */
 const ABOUT = {
   title: "The rider behind the prompts",
-  photo: "",
+  photo: "assets/images/about/indrajit-pulsar-n160.jpg",
   paragraphs: [
     "Hey, I'm Indrajit — a rider who got hooked on turning real bike photos into AI-made worlds. @crawlwithindrajit is where those edits live.",
     "Every prompt on this site is one I've tested on my own bike first and actually used in a reel. If it doesn't hold up — wrong decals, melted wheels, a bike that isn't yours — it doesn't get posted.",
@@ -36,6 +39,33 @@ const ABOUT = {
     { label: "Creates with", value: "ChatGPT · Gemini · Edits" },
     { label: "Based in", value: "India" },
   ],
+  // "From the garage" gallery. type: "image" or "video" (videos loop silently). shape: "wide" or "tall".
+  gallery: [
+    { type: "image", src: "assets/images/garage/night-lake.jpg", alt: "Indrajit standing beside his black Pulsar N160 by a lake at night with city towers behind", shape: "wide" },
+    { type: "video", src: "assets/videos/garage/night-headlight.mp4", poster: "assets/videos/garage/night-headlight.jpg", alt: "Pulsar N160 headlight glowing at night", shape: "tall" },
+    { type: "video", src: "assets/videos/garage/night-parked.mp4", poster: "assets/videos/garage/night-parked.jpg", alt: "Pulsar N160 parked on a quiet street at night", shape: "tall" },
+    { type: "video", src: "assets/videos/garage/pulsar-badge.mp4", poster: "assets/videos/garage/pulsar-badge.jpg", alt: "Close-up of the Pulsar badge on the fuel tank", shape: "wide" },
+    { type: "video", src: "assets/videos/garage/front-field.mp4", poster: "assets/videos/garage/front-field.jpg", alt: "Front view of the Pulsar N160 parked in a green field", shape: "wide" },
+  ],
+};
+
+/* ---------------------------------------------------------------------
+   YOUTUBE — the build pulls your latest videos from YouTube automatically.
+   This list is only used if YouTube can't be reached during a deploy.
+   --------------------------------------------------------------------- */
+const YOUTUBE = {
+  fallback: {
+    videos: [
+      { id: "1KJ5soGAiKI", title: "Kolkata During Diwali Hits Different 🪔✨" },
+      { id: "owfes3Jtgvs", title: "My First Ever Moto Vlog! 🏍️ Let's Go" },
+    ],
+    shorts: [
+      { id: "mqpsCilBYdk", title: "3 Petrol Pump Myths" },
+      { id: "Xwsfm1cT8Bw", title: "N160 Owners, You NEED This! 👀" },
+      { id: "a_g0rOw_GP8", title: "Mileage Gir Gaya? 👀" },
+      { id: "9-ydS7asH18", title: "Our Machines Deserve A Day Too 🛠️🏍️" },
+    ],
+  },
 };
 
 /* ---------------------------------------------------------------------
@@ -71,6 +101,18 @@ const PROMPTS = [
     cover: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp",
     ogImage: "assets/images/prompts/gta-san-andreas-vehicle-story/og.jpg",
     reel: "https://www.instagram.com/reel/Df70GgeAJz1/",
+    // Before/after slider: same bike, real photo vs AI result
+    compare: {
+      before: "assets/images/prompts/gta-san-andreas-vehicle-story/real-side.jpg", beforeLabel: "Real photo",
+      after: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp", afterLabel: "AI result",
+      alt: "Slider comparing a real photo of a black Pulsar N160 with the GTA San Andreas style AI image",
+    },
+    // "What to upload" — the real photos that went into the AI
+    inputs: [
+      { src: "assets/images/prompts/gta-san-andreas-vehicle-story/input-side.jpg", label: "Side", tip: "Full side profile in daylight — shows decals, wheels and shape." },
+      { src: "assets/images/prompts/gta-san-andreas-vehicle-story/input-front.jpg", label: "Front", tip: "Headlight, mirrors and number plate." },
+      { src: "assets/images/prompts/gta-san-andreas-vehicle-story/input-rear.jpg", label: "Rear", tip: "Tail light and rear design." },
+    ],
     images: [
       { src: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp", caption: "Scene 1 · Petrol Pump", alt: "AI image of CJ from GTA San Andreas refuelling a black sports motorcycle at a Los Santos petrol pump" },
       { src: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-7-romantic.webp",    caption: "Scene 7 · Romantic Scene", alt: "AI image of CJ gifting red roses to a woman at sunset with a motorcycle parked in GTA San Andreas style" },
@@ -196,4 +238,4 @@ const FACTS = [
 ];
 
 /* Used by the build (Node). Harmless in the browser. */
-if (typeof module === "object" && module.exports) module.exports = { SITE, ABOUT, PROMPTS, PRODUCTS, STEPS, FACTS };
+if (typeof module === "object" && module.exports) module.exports = { SITE, ABOUT, YOUTUBE, PROMPTS, PRODUCTS, STEPS, FACTS };

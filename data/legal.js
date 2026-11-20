@@ -34,6 +34,8 @@ function legalPages(SITE) {
         { h: "Third-party services on this site", p: [
           "Instagram (Meta): prompt pages embed Instagram reels. When a reel loads, Instagram may collect data under Meta's privacy policy.",
           "Google Fonts: fonts load from Google's servers, which receive your IP address.",
+          "YouTube (Google): the home page shows thumbnails from YouTube. A video player only loads when you press play, using YouTube's privacy-enhanced mode (youtube-nocookie.com); from then on YouTube's privacy policy applies.",
+          "Videos and photos of the bike are hosted on this site itself, with location data removed.",
           "Vercel: hosts the site and provides the analytics above.",
           "Payments (when paid products launch): purchases will be processed by a payment provider such as Razorpay, Gumroad or Lemon Squeezy. They handle your card or UPI details; we only receive your name, email and order details to deliver what you bought.",
         ]},

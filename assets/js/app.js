@@ -70,6 +70,36 @@
     } else load();
   }
 
+  /* ---------- Garage videos: play only while visible (saves data + battery) ---------- */
+  const clips = $$("video[data-autoplay]");
+  if (clips.length && "IntersectionObserver" in window) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const vio = new IntersectionObserver(entries => entries.forEach(e => {
+      const v = e.target;
+      if (e.isIntersecting && !reduce) { v.preload = "auto"; v.play().catch(() => {}); }
+      else v.pause();
+    }), { threshold: 0.35 });
+    clips.forEach(v => vio.observe(v));
+  }
+
+  /* ---------- YouTube: show thumbnail, load the player only on click ---------- */
+  $$(".yt-facade").forEach(btn => btn.addEventListener("click", () => {
+    const iframe = document.createElement("iframe");
+    iframe.src = `https://www.youtube-nocookie.com/embed/${btn.dataset.yt}?autoplay=1&rel=0&modestbranding=1`;
+    iframe.title = btn.getAttribute("aria-label") || "YouTube video";
+    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+    iframe.allowFullscreen = true;
+    iframe.className = "yt-frame";
+    btn.replaceWith(iframe);
+  }));
+
+  /* ---------- Before / after slider ---------- */
+  $$(".compare").forEach(box => {
+    const range = $(".compare-range", box);
+    const set = v => box.style.setProperty("--pos", v + "%");
+    range.addEventListener("input", () => set(range.value));
+  });
+
   /* ---------- Prompt page ---------- */
   const promptEl = $("#promptText");
   if (!promptEl) return;
