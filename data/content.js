@@ -14,6 +14,28 @@ const SITE = {
   instagram: "https://www.instagram.com/crawlwithindrajit/",
   dm: "https://ig.me/m/crawlwithindrajit", // opens an Instagram DM
   googleVerification: "qk_z3i3lw-ght1tn-V_4z3EIq2v1vC_8qscRFaMpXO4", // Google Search Console (HTML tag method)
+  owner: "Indrajit",          // name shown on About + policy pages (use your legal name before selling)
+  contactEmail: "",           // public email for customers — shown on Contact + policy pages when filled
+  location: "India",
+  analytics: true,            // Vercel Web Analytics (page views, no cookies)
+};
+
+/* ---------------------------------------------------------------------
+   ABOUT (home page). photo: path to a square photo, or "" for the logo badge.
+   --------------------------------------------------------------------- */
+const ABOUT = {
+  title: "The rider behind the prompts",
+  photo: "",
+  paragraphs: [
+    "Hey, I'm Indrajit — a rider who got hooked on turning real bike photos into AI-made worlds. @crawlwithindrajit is where those edits live.",
+    "Every prompt on this site is one I've tested on my own bike first and actually used in a reel. If it doesn't hold up — wrong decals, melted wheels, a bike that isn't yours — it doesn't get posted.",
+    "Free prompts stay free. Prompt packs, reel kits and Claude skills are next, for creators who want the full workflow done for them.",
+  ],
+  facts: [
+    { label: "Rides", value: "Bajaj Pulsar N160" },
+    { label: "Creates with", value: "ChatGPT · Gemini · Edits" },
+    { label: "Based in", value: "India" },
+  ],
 };
 
 /* ---------------------------------------------------------------------
@@ -174,4 +196,4 @@ const FACTS = [
 ];
 
 /* Used by the build (Node). Harmless in the browser. */
-if (typeof module === "object" && module.exports) module.exports = { SITE, PROMPTS, PRODUCTS, STEPS, FACTS };
+if (typeof module === "object" && module.exports) module.exports = { SITE, ABOUT, PROMPTS, PRODUCTS, STEPS, FACTS };

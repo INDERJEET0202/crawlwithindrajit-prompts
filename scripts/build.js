@@ -2,7 +2,8 @@
    Run:  node scripts/build.js        (Vercel runs this on every push) */
 const fs = require("fs");
 const path = require("path");
-const { homePage, promptPage, notFoundPage, legacyRedirect, promptPath } = require("./templates.js");
+const { homePage, promptPage, aboutPage, legalPage, notFoundPage, legacyRedirect, promptPath } = require("./templates.js");
+const { legalPages } = require("../data/legal.js");
 
 const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "dist");
@@ -36,6 +37,9 @@ const write = (rel, content) => {
 write("index.html", homePage(C));
 for (const p of C.PROMPTS) write(path.join("prompts", p.slug, "index.html"), promptPage(p, C));
 write("404.html", notFoundPage(C));
+write(path.join("about", "index.html"), aboutPage(C));
+const LEGAL = legalPages(C.SITE);
+for (const page of LEGAL) write(path.join(page.slug, "index.html"), legalPage(page, C));
 write("prompt.html", legacyRedirect());
 
 // ---- sitemap + robots
@@ -44,6 +48,8 @@ const today = new Date().toISOString().slice(0, 10);
 const urls = [
   { loc: base + "/", lastmod: today, priority: "1.0" },
   ...C.PROMPTS.map(p => ({ loc: base + promptPath(p), lastmod: p.updated || p.published || today, priority: "0.8" })),
+  { loc: base + "/about/", lastmod: today, priority: "0.5" },
+  ...LEGAL.map(pg => ({ loc: `${base}/${pg.slug}/`, lastmod: pg.updated, priority: "0.3" })),
 ];
 write("sitemap.xml", `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

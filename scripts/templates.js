@@ -69,6 +69,7 @@ ${jsonld.map(j => `  <script type="application/ld+json">${json(j)}</script>`).jo
       <a href="/#prompts">Prompts</a>
       <a href="/#shop">Shop</a>
       <a href="/#how">How it works</a>
+      <a href="/#about">About</a>
       ${ig("btn-ig", `${IG_ICON}<span>Follow</span>`, "Follow on Instagram")}
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks"><span></span><span></span></button>
@@ -85,11 +86,16 @@ ${body}
   <footer class="footer">
     <a href="/" class="logo">CRAWLWITH<span>INDRAJIT</span><small>PROMPTS</small></a>
     <p class="fine">Fan-made, game-inspired prompts and art. Not affiliated with or endorsed by any game publisher, including Rockstar Games or Take-Two Interactive.</p>
+    <nav class="footer-links" aria-label="Legal">
+      <a href="/about/">About</a><a href="/contact/">Contact</a><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="/refunds/">Refunds &amp; delivery</a>
+    </nav>
     <p class="fine">© ${new Date().getFullYear()} ${ig("link", esc(handle))}</p>
   </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 ${scripts.map(s => `  <script src="${s}"></script>`).join("\n")}
+${SITE.analytics ? `  <script>window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };</script>
+  <script defer src="/_vercel/insights/script.js"></script>` : ""}
 </body>
 </html>
 `;
@@ -119,6 +125,27 @@ const stepsList = (steps, withTags) => `<ol class="steps">${steps.map((s, i) => 
           <li class="step"><span class="step-num">${pad(i + 1)}</span>
             <h3>${esc(s.title)}</h3><p>${esc(s.text)}</p>${withTags && s.tag ? `<span class="tag">${esc(s.tag)}</span>` : ""}</li>`).join("")}
         </ol>`;
+
+/* ------------------------------------------------------------------ about */
+function aboutBlock(C, headingTag = "h2") {
+  const { SITE, ABOUT } = C;
+  const { ig } = makeHelpers(SITE);
+  const photo = ABOUT.photo
+    ? `<img src="${asset(ABOUT.photo)}" alt="${esc(SITE.owner)}, creator of @${esc(SITE.handle)}" width="320" height="320" loading="lazy" />`
+    : `<span class="about-badge" aria-hidden="true"><img src="/assets/icons/apple-touch-icon.png" alt="" width="180" height="180" /></span>`;
+  return `<div class="about">
+        <div class="about-photo">${photo}</div>
+        <div class="about-text">
+          <${headingTag} id="about-title">${esc(ABOUT.title)}</${headingTag}>
+          ${ABOUT.paragraphs.map(t => `<p>${esc(t)}</p>`).join("\n          ")}
+          <ul class="about-facts">${ABOUT.facts.map(f => `<li><span>${esc(f.label)}</span><strong>${esc(f.value)}</strong></li>`).join("")}</ul>
+          <div class="about-actions">
+            ${ig("btn btn-primary", `Follow @${esc(SITE.handle)}`)}
+            <a class="btn btn-ghost" href="/contact/">Contact</a>
+          </div>
+        </div>
+      </div>`;
+}
 
 /* ------------------------------------------------------------------ home */
 function homePage(C) {
@@ -218,6 +245,11 @@ function homePage(C) {
       <div class="facts">${FACTS.map(f => `
         <div class="fact"><span class="fact-type ${f.type}">${labels[f.type] || f.type}</span><p>${esc(f.text)}</p></div>`).join("")}
       </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-title">
+      <p class="kicker">05 — About</p>
+      ${aboutBlock(C)}
     </section>
   </main>`;
 
@@ -387,6 +419,54 @@ function promptPage(p, C) {
   });
 }
 
+/* ------------------------------------------------------------------ about page */
+function aboutPage(C) {
+  const { SITE } = C;
+  const body = `  <main class="section detail">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">About</span></nav>
+    <p class="kicker">About</p>
+    ${aboutBlock(C, "h1")}
+  </main>`;
+  return layout(SITE, {
+    title: `About ${SITE.owner} | ${SITE.name}`,
+    description: `Meet ${SITE.owner} (@${SITE.handle}) — the rider behind the AI prompts, reels and upcoming prompt packs on ${SITE.name}.`,
+    path: "/about/", ogType: "profile", body, scripts: ["/assets/js/app.js"],
+    jsonld: [{ "@context": "https://schema.org", "@type": "AboutPage", name: `About ${SITE.owner}`, url: makeHelpers(SITE).abs("/about/"),
+      mainEntity: { "@type": "Person", name: SITE.owner, alternateName: "@" + SITE.handle, sameAs: [SITE.instagram] } }],
+  });
+}
+
+/* ------------------------------------------------------------------ legal pages */
+function legalPage(page, C) {
+  const { SITE } = C;
+  const { abs, ig, handle } = makeHelpers(SITE);
+  const contactCard = page.contact ? `
+      <div class="contact-grid">
+        ${ig("contact-card", `<span class="contact-label">Instagram DM</span><strong>${esc(handle)}</strong><span class="contact-sub">Fastest way to reach me</span>`)}
+        ${SITE.contactEmail
+          ? `<a class="contact-card" href="mailto:${esc(SITE.contactEmail)}"><span class="contact-label">Email</span><strong>${esc(SITE.contactEmail)}</strong><span class="contact-sub">Orders, refunds and business</span></a>`
+          : ""}
+        <div class="contact-card"><span class="contact-label">Based in</span><strong>${esc(SITE.location)}</strong><span class="contact-sub">Replies within 1–2 business days</span></div>
+      </div>` : "";
+  const body = `  <main class="section detail legal">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span aria-hidden="true">/</span><span aria-current="page">${esc(page.title)}</span></nav>
+    <header class="detail-head">
+      <h1>${esc(page.title)}</h1>
+      <p class="fine">Last updated ${esc(page.updated)}</p>
+    </header>
+    ${page.sections.map(sec => `
+    <section class="legal-section">
+      <h2>${esc(sec.h)}</h2>
+      ${sec.p.map(t => `<p>${esc(t)}</p>`).join("\n      ")}
+    </section>`).join("")}
+    ${contactCard}
+  </main>`;
+  return layout(SITE, {
+    title: `${page.title} | ${SITE.name}`, description: page.description, path: `/${page.slug}/`, body, scripts: ["/assets/js/app.js"],
+    jsonld: [{ "@context": "https://schema.org", "@type": page.contact ? "ContactPage" : "WebPage", name: page.title, url: abs(`/${page.slug}/`), dateModified: page.updated }],
+  });
+}
+
 /* ------------------------------------------------------------------ 404 + legacy redirect */
 function notFoundPage(C) {
   const body = `  <main class="section detail">
@@ -405,4 +485,4 @@ const legacyRedirect = () => `<!doctype html><meta charset="utf-8"><meta name="r
 <script>var s=new URLSearchParams(location.search).get("p");location.replace(s?"/prompts/"+encodeURIComponent(s)+"/":"/#prompts");</script>
 <a href="/#prompts">Continue to the prompt library</a>`;
 
-module.exports = { homePage, promptPage, notFoundPage, legacyRedirect, promptPath };
+module.exports = { homePage, promptPage, aboutPage, legalPage, notFoundPage, legacyRedirect, promptPath };
