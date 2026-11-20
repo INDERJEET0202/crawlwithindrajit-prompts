@@ -13,7 +13,7 @@ const SITE = {
   handle: "crawlwithindrajit",
   instagram: "https://www.instagram.com/crawlwithindrajit/",
   dm: "https://ig.me/m/crawlwithindrajit", // opens an Instagram DM
-  googleVerification: "", // paste the code from Google Search Console here
+  googleVerification: "qk_z3i3lw-ght1tn-V_4z3EIq2v1vC_8qscRFaMpXO4", // Google Search Console (HTML tag method)
 };
 
 /* ---------------------------------------------------------------------
