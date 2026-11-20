@@ -369,7 +369,7 @@ function reelEmbed(p, SITE, ig) {
   if (k) {
     const link = `https://www.instagram.com/${k.type === "post" ? "p" : "reel"}/${k.id}/`;
     // Instagram's embed script turns this into a sized, playable iframe (loaded lazily by app.js)
-    return `<div class="phone phone-embed" data-reel>
+    return `<div class="phone phone-embed${k.type === "post" ? " phone-post" : ""}" data-reel>
             <blockquote class="instagram-media" data-instgrm-permalink="${link}?utm_source=ig_embed" data-instgrm-version="14">
               <a href="${link}" target="_blank" rel="noopener">${k.type === "post" ? "View this post" : "Watch this reel"} on Instagram →</a>
             </blockquote>

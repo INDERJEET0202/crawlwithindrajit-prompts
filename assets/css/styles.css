@@ -427,6 +427,9 @@ img { max-width: 100%; display: block; }
 .phone-embed .instagram-media { margin: 0 !important; min-width: 0 !important; width: 100% !important; max-width: 100% !important; border: 0 !important; border-radius: 0 !important; box-shadow: none !important; }
 .phone-embed .instagram-media > a { display: grid; place-items: center; min-height: 520px; color: #0a0a0c; font-weight: 600; }
 .phone-embed iframe { min-width: 0 !important; width: 100% !important; display: block; border: 0 !important; }
+.phone-post { min-height: 0; }
+.phone-post .instagram-media > a { min-height: 360px; }
+.phone-post iframe { margin-bottom: 0 !important; }
 .phone-soon {
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .7rem; text-align: center; padding: 1.5rem;
   background: linear-gradient(180deg, #2b1055 0%, #ff2e88 70%, #ff5a1f 100%);
