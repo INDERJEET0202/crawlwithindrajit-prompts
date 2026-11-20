@@ -51,6 +51,25 @@
     });
   }
 
+  /* ---------- Instagram reel: load Instagram's embed script only when the reel is near the screen ---------- */
+  const reel = $("[data-reel]");
+  if (reel) {
+    const load = () => {
+      if (window.instgrm) return window.instgrm.Embeds.process();
+      const s = document.createElement("script");
+      s.src = "https://www.instagram.com/embed.js";
+      s.async = true;
+      s.onload = () => window.instgrm && window.instgrm.Embeds.process();
+      document.body.append(s);
+    };
+    if ("IntersectionObserver" in window) {
+      const io = new IntersectionObserver(entries => {
+        if (entries.some(e => e.isIntersecting)) { io.disconnect(); load(); }
+      }, { rootMargin: "600px" });
+      io.observe(reel);
+    } else load();
+  }
+
   /* ---------- Prompt page ---------- */
   const promptEl = $("#promptText");
   if (!promptEl) return;

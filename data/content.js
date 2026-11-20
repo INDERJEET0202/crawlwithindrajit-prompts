@@ -48,7 +48,7 @@ const PROMPTS = [
     output: "9 images · 16:9",
     cover: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp",
     ogImage: "assets/images/prompts/gta-san-andreas-vehicle-story/og.jpg",
-    reel: "", // e.g. "https://www.instagram.com/reel/XXXXXXXX/"
+    reel: "https://www.instagram.com/reel/Df70GgeAJz1/",
     images: [
       { src: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp", caption: "Scene 1 · Petrol Pump", alt: "AI image of CJ from GTA San Andreas refuelling a black sports motorcycle at a Los Santos petrol pump" },
       { src: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-7-romantic.webp",    caption: "Scene 7 · Romantic Scene", alt: "AI image of CJ gifting red roses to a woman at sunset with a motorcycle parked in GTA San Andreas style" },

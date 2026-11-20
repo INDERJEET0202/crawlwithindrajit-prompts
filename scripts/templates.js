@@ -235,7 +235,13 @@ function homePage(C) {
 function reelEmbed(p, SITE, ig) {
   const m = (p.reel || "").match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/);
   if (m) {
-    return `<div class="phone"><iframe src="https://www.instagram.com/reel/${m[1]}/embed/" title="Instagram reel: ${esc(p.title)}" loading="lazy" allowtransparency="true" allow="encrypted-media; picture-in-picture; web-share" scrolling="no"></iframe></div>`;
+    const link = `https://www.instagram.com/reel/${m[1]}/`;
+    // Instagram's embed script turns this into a sized, playable iframe (loaded lazily by app.js)
+    return `<div class="phone phone-embed" data-reel>
+            <blockquote class="instagram-media" data-instgrm-permalink="${link}?utm_source=ig_embed" data-instgrm-version="14">
+              <a href="${link}" target="_blank" rel="noopener">Watch this reel on Instagram →</a>
+            </blockquote>
+          </div>`;
   }
   return `<div class="phone phone-soon">
             <span class="play" aria-hidden="true">▶</span>
