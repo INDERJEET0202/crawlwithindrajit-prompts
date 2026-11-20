@@ -99,10 +99,10 @@ const PROMPTS = [
     tools: ["ChatGPT", "Gemini"],
     output: "1 photo · photorealistic",
     stepsTitle: "Make yours",
-    reelText: "Sheru Bhai in action — watch how the photos come together on Instagram.",
+    reelText: "The full Sheru Bhai photo set on Instagram — swipe through the carousel.",
     cover: "assets/images/prompts/sheru-bhai-photo/result-street-night.jpg",
     ogImage: "assets/images/prompts/sheru-bhai-photo/og.jpg",
-    reel: "",
+    reel: "https://www.instagram.com/p/Dfpw74AktqR/", // Instagram post (carousel)
     images: [
       { src: "assets/images/prompts/sheru-bhai-photo/result-street-night.jpg", caption: "Festive street at night", alt: "AI photo of Indrajit on a festive Indian street at night with Sheru Bhai, a white lion in an ivory suit and gold chains, resting an arm on his shoulder" },
       { src: "assets/images/prompts/sheru-bhai-photo/result-gh-sign.jpg", caption: "With the N160", alt: "AI photo of Indrajit leaning on his Pulsar N160 beside Sheru Bhai the white lion in a white suit" },

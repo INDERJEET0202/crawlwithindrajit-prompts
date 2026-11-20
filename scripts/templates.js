@@ -361,14 +361,17 @@ ${youtubeSection(C, "04")}
 }
 
 /* ------------------------------------------------------------------ prompt page */
+// Instagram link on a prompt → "reel" (reel/reels URLs) or "post" (/p/ URLs, e.g. carousels)
+const igKind = p => { const m = (p.reel || "").match(/instagram\.com\/(?:[\w.]+\/)?(reel|reels|p)\/([\w-]+)/); return m ? { type: m[1] === "p" ? "post" : "reel", id: m[2] } : null; };
+
 function reelEmbed(p, SITE, ig) {
-  const m = (p.reel || "").match(/instagram\.com\/(?:reel|reels|p)\/([\w-]+)/);
-  if (m) {
-    const link = `https://www.instagram.com/reel/${m[1]}/`;
+  const k = igKind(p);
+  if (k) {
+    const link = `https://www.instagram.com/${k.type === "post" ? "p" : "reel"}/${k.id}/`;
     // Instagram's embed script turns this into a sized, playable iframe (loaded lazily by app.js)
     return `<div class="phone phone-embed" data-reel>
             <blockquote class="instagram-media" data-instgrm-permalink="${link}?utm_source=ig_embed" data-instgrm-version="14">
-              <a href="${link}" target="_blank" rel="noopener">Watch this reel on Instagram →</a>
+              <a href="${link}" target="_blank" rel="noopener">${k.type === "post" ? "View this post" : "Watch this reel"} on Instagram →</a>
             </blockquote>
           </div>`;
   }
@@ -481,8 +484,8 @@ function promptPage(p, C) {
 
     <section class="reel-block" aria-labelledby="reel-title">
       <div class="reel-text">
-        <p class="kicker">Watch it</p>
-        <h2 id="reel-title">See the reel</h2>
+        <p class="kicker">${igKind(p) && igKind(p).type === "post" ? "On Instagram" : "Watch it"}</p>
+        <h2 id="reel-title">${igKind(p) && igKind(p).type === "post" ? "See the post" : "See the reel"}</h2>
         <p class="sub">${esc(p.reelText || "This is what the prompt turns into once it is edited and set to music.")}</p>
         ${ig("btn btn-primary", `Follow ${esc(handle)}`)}
       </div>
