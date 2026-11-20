@@ -6,24 +6,41 @@
 const SITE = {
   handle: "crawlwithindrajit",
   instagram: "https://www.instagram.com/crawlwithindrajit/",
+  dm: "https://ig.me/m/crawlwithindrajit", // opens an Instagram DM
 };
 
 /* ---------------------------------------------------------------------
-   PROMPTS — newest first. Copy a whole { ... } block to add a new one.
-   images:  shown one above another, with a caption each
-   prompt:  the full prompt text, between the backticks ` `
-   reel:    optional link to the Instagram reel
+   PROMPT LIBRARY — newest first. Copy a whole { ... } block to add one.
+
+   slug:      short unique id, used in the page link (prompt.html?p=slug)
+   category:  "Image Series", "Reel", "Video", "Image" ... (filters build themselves)
+   price:     "Free" for now. Later e.g. "₹199" with a buy link.
+   cover:     image shown on the card
+   images:    shown one above another on the prompt page
+   steps:     how to use this prompt (shown on the prompt page)
+   prompt:    full prompt text between the backticks ` `
+   reel:      optional link to the Instagram reel
    --------------------------------------------------------------------- */
 const PROMPTS = [
   {
-    title: "Turn My Vehicle Into a GTA San Andreas Story",
-    tag: "GTA San Andreas · 9 scenes",
-    description: "Upload 2–3 real photos of your bike or car. The AI keeps your exact vehicle and drops it into Los Santos with CJ — petrol pump, police check, photoshoot, sunset and more.",
-    tools: ["ChatGPT", "Gemini", "Upload 2–3 photos"],
+    slug: "gta-san-andreas-vehicle-story",
+    title: "Turn Your Vehicle Into a GTA San Andreas Story",
+    category: "Image Series",
+    price: "Free",
+    summary: "Upload 2–3 photos of your bike or car. The AI keeps your exact vehicle and drops it into Los Santos with CJ — 9 cinematic scenes.",
+    tools: ["ChatGPT", "Gemini"],
+    output: "9 images · 16:9",
+    cover: "images/gta-petrol-pump.webp",
     reel: "",
     images: [
       { src: "images/gta-petrol-pump.webp", caption: "Scene 1 · Petrol Pump" },
       { src: "images/gta-romantic.webp",    caption: "Scene 7 · Romantic Scene" },
+    ],
+    steps: [
+      { title: "Generate the images", text: "Open ChatGPT or Gemini, upload 2–3 clear photos of your vehicle and paste the prompt. Say \"next\" after each scene until you have all 9." },
+      { title: "Open Instagram Edits", text: "Start a new project in the Edits app by Instagram and import all 9 images." },
+      { title: "Place them one by one", text: "Arrange the scenes in story order — petrol pump first, hero shot last. About 1–2 seconds per image." },
+      { title: "Add music & post", text: "Pick a trending track, sync the cuts to the beat, export and post. Done bro — that simple." },
     ],
     prompt: `PROMPT: Turn My Vehicle Into a GTA San Andreas Story!
 I am uploading 2–3 real photographs of my vehicle. Use these photographs as the primary visual reference and create a series of 9 separate cinematic images featuring my exact vehicle inside the world of Grand Theft Auto: San Andreas.
@@ -71,23 +88,34 @@ The final result should look like my actual vehicle has entered the GTA San Andr
 ];
 
 /* ---------------------------------------------------------------------
-   HOW TO MAKE THE REEL
+   SHOP — future products. status: "soon" shows "Coming soon".
+   When a product is ready: set status: "live", price: "₹499", link: "https://..."
+   --------------------------------------------------------------------- */
+const PRODUCTS = [
+  { icon: "▦", title: "Prompt Packs",   text: "Curated bundles of tested prompts by theme — game worlds, cinematic rides, poster art.", status: "soon", price: "", link: "" },
+  { icon: "▶", title: "Reel Kits",      text: "Prompts + scene order + music cues + edit guide. Everything to ship a reel in one sitting.", status: "soon", price: "", link: "" },
+  { icon: "✳", title: "Claude Skills",  text: "Ready-to-install Claude skills that write your hooks, captions and content plans for you.", status: "soon", price: "", link: "" },
+  { icon: "✦", title: "Custom Prompts", text: "A prompt built around your bike, brand or idea — tested before it reaches you.", status: "soon", price: "", link: "" },
+];
+
+/* ---------------------------------------------------------------------
+   HOW IT WORKS (home page) — general flow for any prompt
    --------------------------------------------------------------------- */
 const STEPS = [
-  { title: "Generate the images", text: "Open ChatGPT or Gemini, upload 2–3 clear photos of your bike and paste the prompt. Say \"next\" after each scene until you have all 9.", tag: "AI image" },
-  { title: "Open Instagram Edits", text: "Open the Edits app by Instagram, start a new project and import all 9 images.", tag: "Edits app" },
-  { title: "Place them one by one", text: "Arrange the scenes in story order — petrol pump first, hero shot last. Keep each image on screen for about 1–2 seconds.", tag: "Timeline" },
-  { title: "Add music & post", text: "Pick a trending track, sync the cuts to the beat, export and post. Done bro — that simple.", tag: "Publish" },
+  { title: "Pick a prompt", text: "Browse the library and open the one that fits your idea. Every prompt comes with real results.", tag: "Library" },
+  { title: "Generate", text: "Copy it into ChatGPT, Gemini or the tool listed. Upload your own photos when the prompt asks.", tag: "AI tool" },
+  { title: "Edit", text: "Drop the results into Instagram Edits, arrange them, and sync to music.", tag: "Edits app" },
+  { title: "Post & tag", text: "Share it and tag @crawlwithindrajit — the best ones get featured.", tag: "Publish" },
 ];
 
 /* ---------------------------------------------------------------------
    FACTS & TIPS — type: "ai", "bike" or "tip"
    --------------------------------------------------------------------- */
 const FACTS = [
-  { type: "tip",  text: "Upload photos from different angles — side, front three-quarter and rear. The more the AI sees, the more accurately it keeps your bike's decals and shape." },
-  { type: "tip",  text: "Generating one image at a time gives far better results than asking for all 9 at once — and you can ask for a redo on any scene that misses." },
-  { type: "ai",   text: "AI image tools can drift on small details like logos and number plates. If something changes, reply \"keep the vehicle exactly like my photos\" and regenerate." },
-  { type: "ai",   text: "Instagram Reels are vertical 9:16. These scenes are 16:9, so in Edits you can zoom to fill the frame or keep a blurred background behind them." },
+  { type: "tip",  text: "Upload photos from different angles — side, front three-quarter and rear. The more the AI sees, the more accurately it keeps your vehicle's details." },
+  { type: "tip",  text: "Generate one image at a time instead of everything at once. Quality goes up, and you can redo any single scene that misses." },
+  { type: "ai",   text: "AI image tools can drift on small details like logos and number plates. If something changes, ask it to \"keep the vehicle exactly like my photos\" and regenerate." },
+  { type: "ai",   text: "Most AI video models generate short clips of around 5–10 seconds. Full reels are several clips or images stitched together in an editor." },
   { type: "bike", text: "The first petrol-powered motorcycle, the Daimler Reitwagen, was built in Germany in 1885 — with a wooden frame." },
-  { type: "tip",  text: "Sync your image changes to the beat drops of the song. Beat-matched cuts make a simple slideshow feel like a proper edit." },
+  { type: "tip",  text: "Sync image changes to the beat drops of your song. Beat-matched cuts make a simple slideshow feel like a proper edit." },
 ];
