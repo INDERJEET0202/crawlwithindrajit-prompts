@@ -30,11 +30,11 @@ const PROMPTS = [
     summary: "Upload 2–3 photos of your bike or car. The AI keeps your exact vehicle and drops it into Los Santos with CJ — 9 cinematic scenes.",
     tools: ["ChatGPT", "Gemini"],
     output: "9 images · 16:9",
-    cover: "images/gta-petrol-pump.webp",
+    cover: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp",
     reel: "",
     images: [
-      { src: "images/gta-petrol-pump.webp", caption: "Scene 1 · Petrol Pump" },
-      { src: "images/gta-romantic.webp",    caption: "Scene 7 · Romantic Scene" },
+      { src: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-1-petrol-pump.webp", caption: "Scene 1 · Petrol Pump" },
+      { src: "assets/images/prompts/gta-san-andreas-vehicle-story/scene-7-romantic.webp",    caption: "Scene 7 · Romantic Scene" },
     ],
     steps: [
       { title: "Generate the images", text: "Open ChatGPT or Gemini, upload 2–3 clear photos of your vehicle and paste the prompt. Say \"next\" after each scene until you have all 9." },
